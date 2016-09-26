@@ -13,9 +13,8 @@ import (
                 "zkquorum": "192.168.11.73"
 */
 type HbaseConfig struct {
-	Master      string
-	Zkport      string
-	Zkquorum    string
+	Zkport   string
+	Zkquorum string
 }
 
 type Hbase struct {
@@ -43,9 +42,8 @@ func (db *Hbase)Open() {
 
 //获取结果
 func (db *Hbase)GetResult(table string, rowkey string) (result *hbase.ResultRow, err error) {
-	client := db.Client
 	get := hbase.CreateNewGet([]byte(rowkey))
-	result, err = client.Get(table, get)
+	result, err = db.Client.Get(table, get)
 	if (rowkey != result.Row.String()) {
 		err = errors.New("没有rowkey")
 	}
