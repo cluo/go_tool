@@ -119,3 +119,15 @@ func (db *MyRedis) Brpoplpush(source, destination string, timeout int) (string, 
 func (db *MyRedis) Rpoplpush(source, destination string) (string, error) {
 	return db.Client.RPopLPush(source, destination).Result()
 }
+
+func(db *MyRedis) Hexists(key, field string)(bool,error){
+	return db.Client.HExists(key,field).Result()
+}
+
+func(db *MyRedis) Hget(key, field string)(string,error){
+	return db.Client.HGet(key,field).Result()
+}
+
+func(db *MyRedis) Hset(key, field, value string)(bool,error){
+	return db.Client.HSet(key,field,value).Result()
+}
