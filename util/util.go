@@ -7,6 +7,7 @@ package util
 
 import (
 	"strconv"
+	"strings"
 )
 
 //string to int
@@ -18,4 +19,8 @@ func SI(s string) (i int, e error) {
 //int to string
 func IS(i int) string {
 	return strconv.Itoa(i)
+}
+
+func ToLower(s string) string{
+	return strings.ToLower(s)
 }

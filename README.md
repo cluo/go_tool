@@ -483,7 +483,28 @@ func TestHbase(t1 *testing.T) {
 }
 ```
 
-## 4.Http 网络库　**(network library)**
+## 4.Log 日志库　**(log library)**
+
+```
+package mylog
+
+import (
+	"testing"
+)
+
+func TestLog(t *testing.T) {
+	// log filename
+	logger:=NewLog("test.log")
+
+	// log level
+	logger.SetLevel("error")
+
+	logger.Println("1.println","11.println")
+	logger.Error("error")
+	logger.Debugf("%v","debug")
+}
+
+```
 
 ## 5.Util 文件/时间等杂项库 **(some small library such as times and file)**
 
