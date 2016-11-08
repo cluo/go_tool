@@ -1,10 +1,10 @@
-# Go_tool
+# 一.Go_tool
 >This is a tool library for Golang.Dont't worry about not understant it!
 >All comment writes by English,Ahaha~~ 
 
 >Oh,I think some will be Chinese.
 
-# Usage
+# 二.Usage
 ```
 go get -u -v github.com/hunterhug/go_tool
 go get -v github.com/hunterhug/go_image
@@ -16,8 +16,9 @@ go get -v golang.org/x/net/context
 中国防火某些库无法下载！！！
 ```
 
-# Include
-## Image 图像处理库 **(image deal library)**
+# 三.Include
+
+## 1.Image 图像处理库 **(image deal library)**
 
 ```
 package image
@@ -52,7 +53,7 @@ func TestImage(t *testing.T) {
 
 ```
 
-## Spider 爬虫封装库 **(spider library)**
+## 2.Spider 爬虫封装库 **(spider library)**
 
 ```
 package spider
@@ -106,7 +107,7 @@ func TestSpider(t *testing.T) {
 
 ```
 
-## Dbs   数据库封装库 **(database library)**
+## 3.Dbs   数据库封装库 **(database library)**
 
 Mysql
 
@@ -195,6 +196,80 @@ func TestMysql(t *testing.T) {
 			t.Logf("%v:%#v\n", row, v)
 		}
 	}
+}
+
+```
+
+Redis
+
+```
+package myredis
+
+import (
+	"testing"
+)
+
+func TestRedis(t *testing.T) {
+	config := RedisConfig{}
+	config.DB = 0
+	config.Host = "127.0.0.1:6379"
+	config.Password = "smart2016" // no password set ""
+
+	client, err := NewRedis(config) // new redis client
+	if err != nil {
+		panic(err)
+	}
+
+	// set key==value
+	err = client.Set("key", "value", 0)
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	// get key
+	val, err := client.Get("key")
+	if err != nil {
+		panic(err)
+	} else {
+		t.Log("Redis value:" + val)
+	}
+
+	// push test,pust pool with b value
+	num, err := client.Lpush("pool", "b")
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	// total length of list
+	t.Log(num)
+
+	// pushx test,will be error if not exist pool10
+	num, err = client.Lpushx("pool10", "b")
+	if err != nil {
+		t.Error(err.Error())
+	}
+	t.Log(num)
+
+	// len test
+	t.Log(client.Llen("pool"))
+
+	// pop test
+	pops, e := client.Lpop("pool2")
+	if e!=nil {
+		t.Logf("%v,%v", pops, e)
+	}
+
+	// bpop test
+	bpops, e := client.Blpop(0,"pool1","pool1")
+	t.Logf("%#v,%v", bpops, e)
+
+	//rpoplpush test POOL1 empty so will be redis.nil
+	rpoplpush,e:=client.Rpoplpush("POOL1","pool1")
+	t.Logf("%#v,%v", rpoplpush, e)
+
+	//brpoplpush test POOL1 empty so will be redis.nil if timeout but zero set is wait a long time
+	brpoplpush,e:=client.Brpoplpush("POOL1","pool1",15)
+	t.Logf("%#v,%v", brpoplpush, e)
 }
 
 ```
@@ -408,9 +483,9 @@ func TestHbase(t1 *testing.T) {
 }
 ```
 
-## Http 网络库　**(network library)**
+## 4.Http 网络库　**(network library)**
 
-## Util 文件/时间等杂项库 **(some small library such as times and file)**
+## 5.Util 文件/时间等杂项库 **(some small library such as times and file)**
 
 ```
 package util
@@ -471,11 +546,11 @@ func TestUtil(t *testing.T) {
 
 ```
 
-# How to use
+# 四.How to use
 >You all can read the test golang file.And I recomment use IDE **pycharm** which python language use,
 can also install The Go plugin.
 
-# Author
+# 五.Author
 >一只尼玛
 
 My website:[http://www.lenggirl.com](http://www.lenggirl.com)
