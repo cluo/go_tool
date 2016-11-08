@@ -2,18 +2,17 @@ package mysql
 
 import (
 	"testing"
-	"fmt"
 )
 
 /*
 
-CREATE TABLE `51job_keyword` (
+CREATE TABLE IF NOT EXISTS `51job_keyword` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `keyword` varchar(255) NOT NULL DEFAULT '',
   `address` varchar(255) NOT NULL DEFAULT '',
   `kind` varchar(255) NOT NULL DEFAULT '',
-  `created` datetime NOT NULL,
-  `updated` datetime NOT NULL,
+  `created` datetime DEFAULT NULL,
+  `updated` datetime DEFAULT NULL,
   `time51` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='关键字表';
@@ -22,35 +21,65 @@ CREATE TABLE `51job_keyword` (
 
 func TestMysql(t *testing.T) {
 
+	// mysql config
 	config := MysqlConfig{
-		Username:"root",
-		Password:"6833066",
-		Ip:"127.0.0.1",
-		Port:"3306",
-		Dbname:"51job",
+		Username: "root",
+		Password: "smart2016",
+		Ip:       "127.0.0.1",
+		Port:     "3306",
+		Dbname:   "51job",
 	}
 
+	// a new db connection
 	db := New(config)
 
+	// open connection
 	db.Open()
 
-	//'1', '教师', '潮州', '0', '2016-05-27 00:00:00', '2016-05-27 00:00:00', '204'
-	sql := "INSERT INTO `51job_keyword`(`keyword`,`address`,`kind`) values(?,?,?)"
+	// create sql
+	sql := `
+  CREATE TABLE IF NOT EXISTS 51job.51job_keyword (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  keyword varchar(255) NOT NULL DEFAULT '',
+  address varchar(255) NOT NULL DEFAULT '',
+  kind varchar(255) NOT NULL DEFAULT '',
+  created datetime DEFAULT NULL,
+  updated datetime DEFAULT NULL,
+  time51 int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='关键字表';`
 
-	num, err := db.Insert(sql, "PHP", "潮州", 0)
+	// create
+	inum, err := db.Create(sql)
 	if err != nil {
-		fmt.Println(err.Error())
+		t.Error(err.Error())
 	} else {
-		fmt.Printf("插入条数%d\n", num)
+		t.Logf("create number:%d\n", inum)
 	}
 
+	// insert sql
+	//'1', '教师', '潮州', '0', '2016-05-27 00:00:00', '2016-05-27 00:00:00', '204'
+	sql = "INSERT INTO `51job_keyword`(`keyword`,`address`,`kind`) values(?,?,?)"
+
+	// insert
+	num, err := db.Insert(sql, "PHP", "潮州", 0)
+	if err != nil {
+		t.Error(err.Error())
+	} else {
+		t.Logf("insert number:%d\n", num)
+	}
+
+	// select sql
 	sql = "SELECT * FROM 51job_keyword where address=? and kind=? limit ?;"
+
+	// select
 	result, err := db.Select(sql, "潮州", 0, 6)
 	if err != nil {
-		fmt.Println(err.Error())
+		t.Error(err.Error())
 	} else {
+		// values
 		for row, v := range result {
-			fmt.Printf("%v:%#v\n", row, v)
+			t.Logf("%v:%#v\n", row, v)
 		}
 	}
 }

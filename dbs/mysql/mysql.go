@@ -1,6 +1,6 @@
 /*
  * Created by 一只尼玛 on 2016/8/12.
- * 功能： 数据库功能
+ * 功能： Mysql dbs
  *
  */
 package mysql
@@ -26,6 +26,7 @@ type Mysql struct {
 func New(config MysqlConfig) Mysql {
 	return Mysql{Config:config}
 }
+
 //插入数据
 //Insert Data
 func (db *Mysql)Insert(prestring string, parm ...interface{}) (int64, error) {
@@ -44,7 +45,24 @@ func (db *Mysql)Insert(prestring string, parm ...interface{}) (int64, error) {
 
 }
 
-//打开数据库连接
+// Create table
+func (db *Mysql)Create(prestring string, parm ...interface{}) (int64, error) {
+	stmt, err := db.Client.Prepare(prestring)
+	if err != nil {
+		//log.Println(err)
+		return 0, err
+	}
+	R, err := stmt.Exec(parm...)
+	if err != nil {
+		return 0, err
+	}
+	defer stmt.Close()
+	num, err := R.RowsAffected()
+	return num, err
+
+}
+
+//打开数据库连接 open a connecttion
 //username:password@protocol(address)/dbname?param=value
 func (db *Mysql)Open(){
 	dbs, err := sql.Open("mysql", db.Config.Username + ":" + db.Config.Password + "@tcp(" + db.Config.Ip + ":" + db.Config.Port + ")/" + db.Config.Dbname + "?charset=utf8")
