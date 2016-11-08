@@ -11,6 +11,7 @@ import (
 	"log"
 )
 
+// Mysql config
 type MysqlConfig struct {
 	Username string
 	Password string
@@ -18,6 +19,8 @@ type MysqlConfig struct {
 	Port     string
 	Dbname   string
 }
+
+// a client
 type Mysql struct {
 	Config MysqlConfig
 	Client *sql.DB
@@ -77,7 +80,7 @@ func (db *Mysql)Open(){
 	db.Client = dbs
 }
 
-//查询数据库
+//查询数据库 Query
 func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[string]interface{}, err error) {
 	returnrows = []map[string]interface{}{}
 	returnrow := map[string]interface{}{}

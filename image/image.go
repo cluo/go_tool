@@ -2,6 +2,7 @@ package image
 
 import (
 	"errors"
+	// this library is get by anther place
 	"github.com/hunterhug/go-image/graphics"
 	"image"
 	"image/jpeg"
@@ -17,6 +18,7 @@ var (
 )
 
 //按宽度和高度进行比例缩放
+// scale by width and height from a image file to aother file
 func ThumbnailF2F(filename string, savepath string, width int, height int) (err error) {
 	dst := image.NewRGBA(image.Rect(0, 0, width, height))
 
@@ -33,6 +35,7 @@ func ThumbnailF2F(filename string, savepath string, width int, height int) (err 
 }
 
 //按宽度进行比例缩放
+// just scale by width from a image file to other file ,maybe ugly
 func ScaleF2F(filename string, savepath string, width int) (err error) {
 	img, filetype, err := Scale(filename, width)
 	if err != nil {
@@ -46,7 +49,8 @@ func ScaleF2F(filename string, savepath string, width int) (err error) {
 }
 
 //图像文件的真正名字
-func RealImageName(filename string) (filenewname string, err error) {
+// a image file real filename ,such as a tt.jpg may be a tt.png
+func RealImageName(filename string) (filerealname string, err error) {
 	_, ext, err := LoadImage(filename)
 	if err != nil {
 		return
@@ -56,11 +60,12 @@ func RealImageName(filename string) (filenewname string, err error) {
 		err = FileNameError
 	}
 	temp[len(temp) - 1] = ext
-	filenewname = strings.Join(temp, ".")
+	filerealname = strings.Join(temp, ".")
 	return
 }
 
 //文件改名,如果force为假,且新的文件名已经存在,那么抛出错误
+// change a file's name,if force is False then if exist file thorw FileExistError
 func ChangeImageName(oldname string, newname string, force bool) (err error) {
 	if !force {
 		_, err = os.Open(newname)
@@ -76,6 +81,7 @@ func ChangeImageName(oldname string, newname string, force bool) (err error) {
 
 
 // 根据文件名打开图片,并编码,返回编码对象和文件类型
+// Load a image by a filename and return it's type,such as png
 func LoadImage(path string) (img image.Image, filetype string, err error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -87,6 +93,7 @@ func LoadImage(path string) (img image.Image, filetype string, err error) {
 }
 
 // 将编码对象存入文件中
+// save a image object into a file just support png and jpg
 func SaveImage(path string, img *image.RGBA, filetype string) (err error) {
 	file, err := os.Create(path)
 	if err != nil {
@@ -104,6 +111,7 @@ func SaveImage(path string, img *image.RGBA, filetype string) (err error) {
 }
 
 //对文件中的图片进行等比例变化,宽度为newdx,返回图像编码和文件类型
+// see ScaleF2F
 func Scale(filename string, newdx int) (dst *image.RGBA, filetype string, err error) {
 	src, filetype, err := LoadImage(filename)
 	if err != nil {
