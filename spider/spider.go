@@ -12,7 +12,6 @@ import (
 	"net/url"
 	"os"
 	"strings"
-	"time"
 )
 
 var Log = logging.MustGetLogger("go_tool_spider")
@@ -33,7 +32,7 @@ type Spider struct {
 	Method string //Get Post
 	Header http.Header
 	Data   url.Values
-	Wait   time.Duration
+	Wait   int
 	Client *http.Client
 }
 

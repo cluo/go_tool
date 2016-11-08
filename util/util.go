@@ -8,6 +8,7 @@ package util
 import (
 	"strconv"
 	"strings"
+	"time"
 )
 
 //string to int
@@ -21,6 +22,11 @@ func IS(i int) string {
 	return strconv.Itoa(i)
 }
 
-func ToLower(s string) string{
+func ToLower(s string) string {
 	return strings.ToLower(s)
+}
+
+// sleep
+func Sleep(waittime int) {
+	time.Sleep(time.Duration(waittime) * time.Second)
 }

@@ -6,20 +6,20 @@
 package spider
 
 import (
-	"time"
 	"net/http"
 	"fmt"
 	"errors"
+	"github.com/hunterhug/go_tool/util"
 )
 
 // Wait some secord
-func Wait(waittime time.Duration) {
+func Wait(waittime int) {
 	if waittime <= 0 {
 		return
 	} else {
 		// debug
 		Log.Debugf("Stop %d Second～～", waittime)
-		time.Sleep(waittime * time.Second)
+		util.Sleep(waittime)
 	}
 }
 
