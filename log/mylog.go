@@ -85,7 +85,7 @@ func (this *Log) Printf(format string, v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "debug" || temp == "info" || temp == "all" {
 		log.Printf("[I]:"+format, v...)
-		this.Logger.Printf(format, v...)
+		this.Logger.Printf("[I]:"+format, v...)
 	}
 }
 
