@@ -30,3 +30,23 @@ func ToLower(s string) string {
 func Sleep(waittime int) {
 	time.Sleep(time.Duration(waittime) * time.Second)
 }
+
+
+func TodayString(level int) string {
+	formats := "20060102-15:04:05"
+	switch level {
+	case 1:
+		formats = "2006"
+	case 2:
+		formats = "200601"
+	case 3:
+		formats = "20060102"
+	case 4:
+		formats = "20060102-15"
+	case 5:
+		formats = "20060102-15:04"
+	default:
+
+	}
+	return time.Now().Format(formats)
+}

@@ -52,4 +52,6 @@ func TestUtil(t *testing.T) {
 	} else {
 		t.Log("Test ReadfromFile:" + string(filebytes))
 	}
+
+	t.Log(TodayString(3))
 }
