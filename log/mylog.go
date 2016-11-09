@@ -31,7 +31,7 @@ func NewLog(logfilename string) Log {
 	//	//Todo
 	//	//??
 	//}
-	logger := log.New(file, "[I]:", log.LstdFlags|log.Lshortfile)
+	logger := log.New(file, "", log.LstdFlags|log.Lshortfile)
 	// print to conslose
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	temp.Logger = logger
@@ -42,8 +42,7 @@ func (this *Log) Errorf(format string, v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "error" || temp == "debug" || temp == "info" || temp == "all" {
 		log.Printf("[E]:"+format, v...)
-		this.Logger.SetPrefix("[E]:")
-		this.Logger.Printf(format, v...)
+		this.Logger.Printf("[E]:"+format, v...)
 	}
 }
 
@@ -51,8 +50,7 @@ func (this *Log) Debugf(format string, v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "debug" || temp == "all" {
 		log.Printf("[D]:"+format, v...)
-		this.Logger.SetPrefix("[D]:")
-		this.Logger.Printf(format, v...)
+		this.Logger.Printf("[D]:"+format, v...)
 	}
 }
 
@@ -61,7 +59,6 @@ func (this *Log) Error(v ...interface{}) {
 	if temp == "error" || temp == "debug" || temp == "info" || temp == "all" {
 		v[0] = "[E]:" + v[0].(string)
 		log.Println(v...)
-		this.Logger.SetPrefix("[E]:")
 		this.Logger.Println(v...)
 	}
 }
@@ -71,7 +68,6 @@ func (this *Log) Debug(v ...interface{}) {
 	if temp == "debug" || temp == "all" {
 		v[0] = "[D]:" + v[0].(string)
 		log.Println(v...)
-		this.Logger.SetPrefix("[D]:")
 		this.Logger.Println(v...)
 	}
 }
@@ -81,7 +77,6 @@ func (this *Log) Println(v ...interface{}) {
 	if temp == "debug" || temp == "info" || temp == "all" {
 		v[0] = "[I]:" + v[0].(string)
 		log.Println(v...)
-		this.Logger.SetPrefix("[I]:")
 		this.Logger.Println(v...)
 	}
 }
@@ -90,7 +85,6 @@ func (this *Log) Printf(format string, v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "debug" || temp == "info" || temp == "all" {
 		log.Printf("[I]:"+format, v...)
-		this.Logger.SetPrefix("[I]:")
 		this.Logger.Printf(format, v...)
 	}
 }
