@@ -1,1 +1,10 @@
 [E]:2016/11/08 16:58:34 mylog.go:59: error
+[I]:2016/11/09 09:28:41 mylog.go:82: 1.println 11.println
+[E]:2016/11/09 09:28:41 mylog.go:64: error
+[D]:2016/11/09 09:28:41 mylog.go:55: debug
+[I]:2016/11/09 09:32:06 mylog.go:85: [I]:1.println 11.println
+[E]:2016/11/09 09:32:06 mylog.go:65: [E]:error
+[D]:2016/11/09 09:32:06 mylog.go:55: debug
+[I]:2016/11/09 09:32:45 mylog.go:85: [I]:1.println 11.println
+[E]:2016/11/09 09:32:45 mylog.go:65: [E]:error
+[D]:2016/11/09 09:32:45 mylog.go:55: debug

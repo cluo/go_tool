@@ -9,7 +9,7 @@ func TestLog(t *testing.T) {
 	logger:=NewLog("test.log")
 
 	// log level
-	logger.SetLevel("error")
+	logger.SetLevel("debug")
 
 	logger.Println("1.println","11.println")
 	logger.Error("error")
