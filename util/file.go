@@ -53,9 +53,13 @@ func MakeDirByFile(filepath string) error {
 }
 
 func FileExist(filename string) bool {
-	_, err := os.Stat(filename)
+	fi, err := os.Stat(filename)
 	if err != nil {
+		return false
+	}
+	if fi.IsDir(){
+		return false
+	}else {
 		return true
 	}
-	return false
 }
