@@ -131,3 +131,8 @@ func(db *MyRedis) Hget(key, field string)(string,error){
 func(db *MyRedis) Hset(key, field, value string)(bool,error){
 	return db.Client.HSet(key,field,value).Result()
 }
+
+// return item rem number if count==0 all rem if count>0 from the list head to rem
+func(db *MyRedis) Lrem(key string, count int64, value interface{})(int64,error){
+	return db.Client.LRem(key,count,value).Result()
+}
