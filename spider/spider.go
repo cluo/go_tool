@@ -6,26 +6,11 @@
 package spider
 
 import (
-	"github.com/op/go-logging"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 )
-
-var Log = logging.MustGetLogger("go_tool_spider")
-var format = logging.MustStringFormatter(
-	"%{color}%{time:2006-01-02 15:04:05.000} %{longpkg}:%{longfunc} [%{level:.5s}]:%{color:reset} %{message}",
-)
-
-// init log record
-func init() {
-	backend := logging.NewLogBackend(os.Stderr, "", 0)
-	backendFormatter := logging.NewBackendFormatter(backend, format)
-	logging.SetBackend(backendFormatter)
-	logging.SetLevel(logging.INFO, "go_tool_spider")
-}
 
 type Spider struct {
 	Url        string
@@ -39,20 +24,19 @@ type Spider struct {
 	Errortimes int    // error times
 }
 
-// level name you can refer
-var LevelNames = []string{
-	"CRITICAL",
-	"ERROR",
-	"WARNING",
-	"NOTICE",
-	"INFO",
-	"DEBUG",
-}
+func NewSpider(ipstring interface{}) (Spider, error) {
+	spider := Spider{}
+	spider.Header = http.Header{}
+	if ipstring != nil {
+		client, err := NewProxyClient(ipstring.(string))
+		spider.Client = client
+		return spider, err
+	} else {
+		client, err := NewClient()
+		spider.Client = client
+		return spider, err
+	}
 
-// set log level
-func (this *Spider) SetLogLevel(level string) {
-	lvl, _ := logging.LogLevel(level)
-	logging.SetLevel(lvl, "go_tool_spider")
 }
 
 // auto decide which method
@@ -71,7 +55,7 @@ func (this *Spider) Get() (body []byte, e error) {
 	Wait(this.Wait)
 
 	//debug,can use SetLogLevel to change
-	Log.Debug("GET url:" + this.Url)
+	Logger.Debug("GET url:" + this.Url)
 
 	//a new request
 	request, _ := http.NewRequest("GET", this.Url, nil)
@@ -96,7 +80,7 @@ func (this *Spider) Get() (body []byte, e error) {
 
 	//debug
 	OutputMaps("----------response header-----------", response.Header)
-	Log.Debugf("Status：%v:%v", response.Status, response.Proto)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
 
 	//设置新Cookie
 	//Cookieb = MergeCookie(Cookieb, response.Cookies())
@@ -111,7 +95,7 @@ func (this *Spider) Get() (body []byte, e error) {
 func (this *Spider) Post() (body []byte, e error) {
 	Wait(this.Wait)
 
-	Log.Debug("POST url:" + this.Url)
+	Logger.Debug("POST url:" + this.Url)
 
 	var request = &http.Request{}
 
@@ -140,7 +124,7 @@ func (this *Spider) Post() (body []byte, e error) {
 	defer response.Body.Close()
 
 	OutputMaps("----------response header-----------", response.Header)
-	Log.Debugf("Status：%v:%v", response.Status, response.Proto)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
 
 	body, e = ioutil.ReadAll(response.Body)
 
@@ -153,9 +137,4 @@ func (this *Spider) Post() (body []byte, e error) {
 // class method
 func (this *Spider) NewHeader(ua interface{}, host string, refer interface{}) {
 	this.Header = NewHeader(ua, host, refer)
-}
-
-// return global log
-func (this *Spider) Log() *logging.Logger {
-	return Log
 }

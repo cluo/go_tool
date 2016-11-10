@@ -21,7 +21,7 @@ var (
 	//default client to ask get or post
 	Client = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Log.Debugf("-----------Redirect:%v------------", req.URL)
+			Logger.Debugf("-----------Redirect:%v------------", req.URL)
 			return nil
 		},
 		Jar: NewJar(),
@@ -40,7 +40,7 @@ func NewProxyClient(proxystring string) (*http.Client,error){
 	client := &http.Client{
 		// allow redirect
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Log.Debugf("-----------Redirect:%v------------", req.URL)
+			Logger.Debugf("-----------Redirect:%v------------", req.URL)
 			return nil
 		},
 		Transport: &http.Transport{
@@ -57,7 +57,7 @@ func NewClient() (*http.Client,error){
 	client := &http.Client{
 		// allow redirect
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Log.Debugf("-----------Redirect:%v------------", req.URL)
+			Logger.Debugf("-----------Redirect:%v------------", req.URL)
 			return nil
 		},
 		Jar: NewJar(),
@@ -65,35 +65,4 @@ func NewClient() (*http.Client,error){
 	return client,nil
 }
 
-//merge Cookie，后来的覆盖前来的
-func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
-	cs := make(map[string]*http.Cookie)
 
-	for _, b := range before {
-		cs[b.Name] = b
-	}
-
-	for _, a := range after {
-		if a.Value != "" {
-			cs[a.Name] = a
-		}
-	}
-
-	res := make([]*http.Cookie, 0, len(cs))
-
-	for _, q := range cs {
-		res = append(res, q)
-
-	}
-
-	return res
-
-}
-
-// clone a header
-func CloneHeader(h map[string][]string) map[string][]string {
-	if h == nil {
-		h = SpiderHeader
-	}
-	return CopyM(h)
-}

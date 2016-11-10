@@ -1,6 +1,8 @@
 //常量包
 package spider
 
+import "net/http"
+
 const (
 	//暂停时间 default wait time
 	WaitTime = 5
@@ -44,4 +46,38 @@ func NewHeader(ua interface{}, host string, refer interface{}) map[string][]stri
 		},
 	}
 	return h
+}
+
+
+//merge Cookie，后来的覆盖前来的
+func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
+	cs := make(map[string]*http.Cookie)
+
+	for _, b := range before {
+		cs[b.Name] = b
+	}
+
+	for _, a := range after {
+		if a.Value != "" {
+			cs[a.Name] = a
+		}
+	}
+
+	res := make([]*http.Cookie, 0, len(cs))
+
+	for _, q := range cs {
+		res = append(res, q)
+
+	}
+
+	return res
+
+}
+
+// clone a header
+func CloneHeader(h map[string][]string) map[string][]string {
+	if h == nil {
+		h = SpiderHeader
+	}
+	return CopyM(h)
 }
