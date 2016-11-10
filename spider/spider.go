@@ -28,12 +28,15 @@ func init() {
 }
 
 type Spider struct {
-	Url    string
-	Method string //Get Post
-	Header http.Header
-	Data   url.Values
-	Wait   int
-	Client *http.Client
+	Url        string
+	Method     string //Get Post
+	Header     http.Header
+	Data       url.Values
+	Wait       int
+	Client     *http.Client
+	Fetchtimes int    // url fetch number times
+	Ip         string // spider ip
+	Errortimes int    // error times
 }
 
 // level name you can refer
@@ -86,6 +89,7 @@ func (this *Spider) Get() (body []byte, e error) {
 	}
 	response, err := this.Client.Do(request)
 	if err != nil {
+		this.Errortimes++
 		return nil, err
 	}
 	defer response.Body.Close()
@@ -99,7 +103,7 @@ func (this *Spider) Get() (body []byte, e error) {
 
 	//返回内容 return bytes
 	body, e = ioutil.ReadAll(response.Body)
-
+	this.Fetchtimes++
 	return
 }
 
@@ -129,6 +133,7 @@ func (this *Spider) Post() (body []byte, e error) {
 	}
 	response, err := this.Client.Do(request)
 	if err != nil {
+		this.Errortimes++
 		return nil, err
 	}
 
@@ -141,7 +146,7 @@ func (this *Spider) Post() (body []byte, e error) {
 
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
-
+	this.Fetchtimes++
 	return
 }
 
