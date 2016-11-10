@@ -6,6 +6,13 @@ import (
 )
 
 func TestSpider(t *testing.T) {
+
+	// global log record
+	//SetLogLevel("DEBUg")
+	SetLogLevel("debug")
+	// GLOBAL TIMEOUT
+	SetGlobalTimeout(3)
+
 	// a new spider without proxy
 	// NewSpider(nil)
 	proxy := "http://smart:smart2016@104.128.121.46:808"
@@ -20,10 +27,6 @@ func TestSpider(t *testing.T) {
 	// which url fetch
 	spiders.Url = "http://www.goole.com"
 
-	// global log record
-	//SetLogLevel("DEBUg")
-	SetLogLevel("error")
-
 	// a new header,default ua, no refer
 	spiders.NewHeader(nil, "www.google.com", nil)
 
@@ -36,6 +39,8 @@ func TestSpider(t *testing.T) {
 		// bytes get!
 		fmt.Printf("%s", string(body))
 	}
+
+	Log().Debugf("%#v",spiders)
 
 	// if filesize small than 500KB
 	err = TooSortSizes(body, 500)

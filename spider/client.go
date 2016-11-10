@@ -6,6 +6,7 @@
 package spider
 
 import (
+	"github.com/hunterhug/go_tool/util"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -30,9 +31,8 @@ var (
 	Cookieb = []*http.Cookie{} //map[string][]string
 )
 
-
 // a proxy client
-func NewProxyClient(proxystring string) (*http.Client,error){
+func NewProxyClient(proxystring string) (*http.Client, error) {
 	proxy, err := url.Parse(proxystring)
 	if err != nil {
 		return nil, err
@@ -47,22 +47,21 @@ func NewProxyClient(proxystring string) (*http.Client,error){
 			Proxy: http.ProxyURL(proxy),
 		},
 		Jar: NewJar(),
+		Timeout: util.Second(DefaultTimeOut),
 	}
-	return client,nil
+	return client, nil
 }
 
-
 // a client
-func NewClient() (*http.Client,error){
+func NewClient() (*http.Client, error) {
 	client := &http.Client{
 		// allow redirect
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			Logger.Debugf("-----------Redirect:%v------------", req.URL)
 			return nil
 		},
-		Jar: NewJar(),
+		Jar:     NewJar(),
+		Timeout: util.Second(DefaultTimeOut),
 	}
-	return client,nil
+	return client, nil
 }
-
-

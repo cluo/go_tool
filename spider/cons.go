@@ -16,7 +16,13 @@ var (
 			FoxfireLinux,
 		},
 	}
+	// http get and post No timeout
+	DefaultTimeOut = 0
 )
+
+func SetGlobalTimeout(num int) {
+	DefaultTimeOut = num
+}
 
 // usually a header has ua,host and refer
 func NewHeader(ua interface{}, host string, refer interface{}) map[string][]string {
@@ -47,7 +53,6 @@ func NewHeader(ua interface{}, host string, refer interface{}) map[string][]stri
 	}
 	return h
 }
-
 
 //merge Cookie，后来的覆盖前来的
 func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {

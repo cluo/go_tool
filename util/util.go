@@ -31,6 +31,11 @@ func Sleep(waittime int) {
 	time.Sleep(time.Duration(waittime) * time.Second)
 }
 
+//time
+func Second(times int) time.Duration {
+	return time.Duration(times) * time.Second
+}
+
 
 func TodayString(level int) string {
 	formats := "20060102-15:04:05"

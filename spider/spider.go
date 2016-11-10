@@ -13,15 +13,16 @@ import (
 )
 
 type Spider struct {
-	Url        string
-	Method     string //Get Post
-	Header     http.Header
-	Data       url.Values
-	Wait       int
-	Client     *http.Client
-	Fetchtimes int    // url fetch number times
-	Ip         string // spider ip
-	Errortimes int    // error times
+	Url           string // the last fetch url
+	UrlStatuscode int    // the last url response code,such as 404
+	Method        string //Get Post
+	Header        http.Header
+	Data          url.Values // post data
+	Wait          int        // sleep time
+	Client        *http.Client
+	Fetchtimes    int    // url fetch number times
+	Errortimes    int    // error times
+	Ipstring      string // spider ip,just for user to record their proxyip
 }
 
 func NewSpider(ipstring interface{}) (Spider, error) {
@@ -30,6 +31,7 @@ func NewSpider(ipstring interface{}) (Spider, error) {
 	if ipstring != nil {
 		client, err := NewProxyClient(ipstring.(string))
 		spider.Client = client
+		spider.Ipstring = ipstring.(string)
 		return spider, err
 	} else {
 		client, err := NewClient()
@@ -81,7 +83,7 @@ func (this *Spider) Get() (body []byte, e error) {
 	//debug
 	OutputMaps("----------response header-----------", response.Header)
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
-
+	this.UrlStatuscode = response.StatusCode
 	//设置新Cookie
 	//Cookieb = MergeCookie(Cookieb, response.Cookies())
 
@@ -125,7 +127,7 @@ func (this *Spider) Post() (body []byte, e error) {
 
 	OutputMaps("----------response header-----------", response.Header)
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
-
+	this.UrlStatuscode = response.StatusCode
 	body, e = ioutil.ReadAll(response.Body)
 
 	//设置新Cookie
