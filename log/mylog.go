@@ -41,23 +41,25 @@ func NewLog(logfilename string) Log {
 func (this *Log) Errorf(format string, v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "error" || temp == "debug" || temp == "info" || temp == "all" {
-		log.Printf("[E]:"+format, v...)
-		this.Logger.Printf("[E]:"+format, v...)
+		format = "[E:" + util.IS(os.Getpid()) + "]:" + format
+		log.Printf(format, v...)
+		this.Logger.Printf(format, v...)
 	}
 }
 
 func (this *Log) Debugf(format string, v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "debug" || temp == "all" {
-		log.Printf("[D]:"+format, v...)
-		this.Logger.Printf("[D]:"+format, v...)
+		format = "[D:" + util.IS(os.Getpid()) + "]:" + format
+		log.Printf(format, v...)
+		this.Logger.Printf(format, v...)
 	}
 }
 
 func (this *Log) Error(v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "error" || temp == "debug" || temp == "info" || temp == "all" {
-		v[0] = "[E]:" + v[0].(string)
+		v[0] = "[E:" + util.IS(os.Getpid()) + "]:" + v[0].(string)
 		log.Println(v...)
 		this.Logger.Println(v...)
 	}
@@ -66,7 +68,7 @@ func (this *Log) Error(v ...interface{}) {
 func (this *Log) Debug(v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "debug" || temp == "all" {
-		v[0] = "[D]:" + v[0].(string)
+		v[0] = "[D:" + util.IS(os.Getpid()) + "]:" + v[0].(string)
 		log.Println(v...)
 		this.Logger.Println(v...)
 	}
@@ -75,7 +77,7 @@ func (this *Log) Debug(v ...interface{}) {
 func (this *Log) Println(v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "debug" || temp == "info" || temp == "all" {
-		v[0] = "[I]:" + v[0].(string)
+		v[0] = "[I:" + util.IS(os.Getpid()) + "]:" + v[0].(string)
 		log.Println(v...)
 		this.Logger.Println(v...)
 	}
@@ -84,8 +86,9 @@ func (this *Log) Println(v ...interface{}) {
 func (this *Log) Printf(format string, v ...interface{}) {
 	temp := util.ToLower(this.LogLevel)
 	if temp == "debug" || temp == "info" || temp == "all" {
-		log.Printf("[I]:"+format, v...)
-		this.Logger.Printf("[I]:"+format, v...)
+		format = "[I:" + util.IS(os.Getpid()) + "]" + format
+		log.Printf(format, v...)
+		this.Logger.Printf(format, v...)
 	}
 }
 

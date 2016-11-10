@@ -9,6 +9,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	//"fmt"
 )
 
 // Mysql config
@@ -83,7 +84,6 @@ func (db *Mysql)Open(){
 //查询数据库 Query
 func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[string]interface{}, err error) {
 	returnrows = []map[string]interface{}{}
-	returnrow := map[string]interface{}{}
 	rows, err := db.Client.Query(prestring, parm...)
 	if err != nil {
 		return
@@ -92,8 +92,9 @@ func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[
 	defer rows.Close()
 	// Get column names
 	columns, err := rows.Columns()
+
 	if err != nil {
-		return
+		return nil,err
 	}
 
 	// Make a slice for the values
@@ -109,10 +110,11 @@ func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[
 
 	// Fetch rows
 	for rows.Next() {
+		returnrow := map[string]interface{}{}
 		// get RawBytes from data
 		err = rows.Scan(scanArgs...)
 		if err != nil {
-			return
+			return nil,err
 		}
 
 		// Now do something with the data.
@@ -133,7 +135,7 @@ func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[
 		//log.Println("-----------------------------------")
 	}
 	if err = rows.Err(); err != nil {
-		return
+		return nil,err
 	}
 	return
 }
