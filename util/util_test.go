@@ -54,4 +54,6 @@ func TestUtil(t *testing.T) {
 	}
 
 	t.Log(TodayString(3))
+
+	t.Errorf("%v",FileExist("../r.txt"))
 }
