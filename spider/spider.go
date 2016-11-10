@@ -36,6 +36,7 @@ func NewSpider(ipstring interface{}) (Spider, error) {
 	} else {
 		client, err := NewClient()
 		spider.Client = client
+		spider.Ipstring = "localhost"
 		return spider, err
 	}
 
