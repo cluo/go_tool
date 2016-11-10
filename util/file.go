@@ -51,3 +51,11 @@ func MakeDirByFile(filepath string) error {
 	dirpath := strings.Join(temp[0:len(temp)-1], "/")
 	return MakeDir(dirpath)
 }
+
+func FileExist(filename string) bool {
+	_, err := os.Stat(filename)
+	if err != nil {
+		return true
+	}
+	return false
+}
