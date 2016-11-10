@@ -55,5 +55,8 @@ func TestUtil(t *testing.T) {
 
 	t.Log(TodayString(3))
 
-	t.Errorf("%v",FileExist("../r.txt"))
+	t.Logf("%v",FileExist("../r.txt"))
+
+	filenames,err:=ListDir(`G:\smartdogo\src\github.com\hunterhug\go_tool`,"go")
+	t.Logf("%v:%v",filenames,err)
 }
