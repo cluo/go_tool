@@ -34,6 +34,17 @@ func ReadfromFile(filepath string) ([]byte, error) {
 	return ioutil.ReadFile(filepath)
 }
 
+// Get file info
+func GetFilenameInfo(filepath string)(os.FileInfo, error){
+	fileinfo,err:=os.Stat(filepath)
+	return fileinfo,err
+}
+
+// rename
+func Rename(oldfilename string,newfilename string)error{
+	return os.Rename(oldfilename,newfilename)
+}
+
 //根据传入文件夹名字递归新建文件夹
 //Create dir by recursion
 func MakeDir(filedir string) error {
