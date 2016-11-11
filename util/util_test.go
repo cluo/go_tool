@@ -74,5 +74,13 @@ func TestUtil(t *testing.T) {
 	}
 
 	// now secord times from January 1, 1970 UTC.
-	t.Log(GetSecordTimes())
+	secord:=GetSecordTimes()
+	t.Log(secord)
+
+	// now date string by secord
+	timestring:=GetSecord2DateTimes(secord)
+	t.Log(timestring)
+
+	// change back
+	t.Log(GetDateTimes2Secord(timestring))
 }

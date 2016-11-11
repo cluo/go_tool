@@ -565,9 +565,36 @@ func TestUtil(t *testing.T) {
 		t.Log("Test ReadfromFile:" + string(filebytes))
 	}
 
+	// times format
 	t.Log(TodayString(3))
 
-	t.Errorf("%v",FileExist("../r.txt"))
+	// file exist?
+	t.Logf("%v",FileExist("../r.txt"))
+
+	// find the go file in some dir
+	filenames,err:=ListDir(`G:\smartdogo\src\github.com\hunterhug\go_tool`,"go")
+	t.Logf("%v:%v",filenames,err)
+
+	// devide a string list into severy string list
+	stringlist:=[]string{"2","3","4","5","4"}
+	num:=3
+	result,err:=DevideStringList(stringlist,num)
+	if err!=nil{
+		t.Error(err)
+	}else{
+		t.Logf("%#v",result)
+	}
+
+	// now secord times from January 1, 1970 UTC.
+	secord:=GetSecordTimes()
+	t.Log(secord)
+
+	// now date string by secord
+	timestring:=GetSecord2DateTimes(secord)
+	t.Log(timestring)
+
+	// change back
+	t.Log(GetDateTimes2Secord(timestring))
 }
 
 ```
