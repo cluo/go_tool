@@ -97,14 +97,13 @@ func ListDir(dirPth string, suffix string) (files []string, err error) {
 	if err != nil {
 		return nil, err
 	}
-	PthSep := string(os.PathSeparator)
 	suffix = strings.ToUpper(suffix)
 	for _, fi := range dir {
 		if fi.IsDir() {
 			continue
 		}
 		if strings.HasSuffix(strings.ToUpper(fi.Name()), suffix) { //匹配文件
-			files = append(files, dirPth+PthSep+fi.Name())
+			files = append(files, dirPth+"/"+fi.Name())
 		}
 	}
 	return files, nil

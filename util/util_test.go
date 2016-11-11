@@ -83,4 +83,11 @@ func TestUtil(t *testing.T) {
 
 	// change back
 	t.Log(GetDateTimes2Secord(timestring))
+
+	finfo,err:=GetFilenameInfo(`G:\smartdogo\src\github.com\hunterhug\go_tool\README.md`)
+	if err!=nil{
+		t.Error(err.Error())
+	}else {
+		t.Log(finfo.Name())
+	}
 }
