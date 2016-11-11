@@ -70,6 +70,8 @@ func (db *Mysql)Create(prestring string, parm ...interface{}) (int64, error) {
 //username:password@protocol(address)/dbname?param=value
 func (db *Mysql)Open(){
 	dbs, err := sql.Open("mysql", db.Config.Username + ":" + db.Config.Password + "@tcp(" + db.Config.Ip + ":" + db.Config.Port + ")/" + db.Config.Dbname + "?charset=utf8")
+	dbs.SetMaxIdleConns(1000)
+	dbs.SetMaxOpenConns(2000)
 	if err != nil {
 		log.Fatalf("Open database error: %s\n", err)
 	}
