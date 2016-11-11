@@ -37,6 +37,13 @@ func Second(times int) time.Duration {
 	return time.Duration(times) * time.Second
 }
 
+
+// get secord times
+func GetSecordTimes()int64{
+	return time.Now().Unix()
+}
+
+
 func TodayString(level int) string {
 	formats := "20060102-15:04:05"
 	switch level {
@@ -76,7 +83,7 @@ func TodayString(level int) string {
 func DevideStringList(files []string, num int) (map[int][]string, error) {
 	length := len(files)
 	split := map[int][]string{}
-	if length <= 0 {
+	if num <= 0 {
 		return split, errors.New("num must not negtive")
 	}
 	if num >= length {
