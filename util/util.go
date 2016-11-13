@@ -91,6 +91,8 @@ func TodayString(level int) string {
 //    for i in range(len(remain)):
 //        split[i % num].append(remain[i])
 //    return split
+
+// change by python
 func DevideStringList(files []string, num int) (map[int][]string, error) {
 	length := len(files)
 	split := map[int][]string{}
@@ -102,7 +104,8 @@ func DevideStringList(files []string, num int) (map[int][]string, error) {
 	}
 	process := length / num
 	for i := 0; i < num; i++ {
-		split[i] = (files[i*process : (i+1)*process])
+		// slice is a refer, so must do this append
+		split[i] = append(split[i],files[i*process : (i+1)*process]...)
 	}
 	remain := files[num*process:]
 	for i := 0; i < len(remain); i++ {

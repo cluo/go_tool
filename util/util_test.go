@@ -64,7 +64,7 @@ func TestUtil(t *testing.T) {
 	t.Logf("%v:%v",filenames,err)
 
 	// devide a string list into severy string list
-	stringlist:=[]string{"2","3","4","5","4"}
+	stringlist:=[]string{"2","3","4","5","6"}
 	num:=3
 	result,err:=DevideStringList(stringlist,num)
 	if err!=nil{
