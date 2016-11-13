@@ -104,7 +104,8 @@ func DevideStringList(files []string, num int) (map[int][]string, error) {
 	}
 	process := length / num
 	for i := 0; i < num; i++ {
-		// slice is a refer, so must do this append
+		// slice inside has a refer, so must do this append
+		//split[i]=files[i*process : (i+1)*process] wrong!
 		split[i] = append(split[i],files[i*process : (i+1)*process]...)
 	}
 	remain := files[num*process:]
