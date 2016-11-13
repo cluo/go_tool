@@ -25,8 +25,8 @@ type Spider struct {
 	Ipstring      string // spider ip,just for user to record their proxyip
 }
 
-func NewSpider(ipstring interface{}) (Spider, error) {
-	spider := Spider{}
+func NewSpider(ipstring interface{}) (*Spider, error) {
+	spider := new(Spider)
 	spider.Header = http.Header{}
 	if ipstring != nil {
 		client, err := NewProxyClient(ipstring.(string))
