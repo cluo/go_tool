@@ -81,7 +81,7 @@ func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
 
 // clone a header
 func CloneHeader(h map[string][]string) map[string][]string {
-	if h == nil {
+	if h == nil || len(h)==0{
 		h = SpiderHeader
 	}
 	return CopyM(h)
