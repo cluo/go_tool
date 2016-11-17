@@ -69,6 +69,9 @@ func (db *Mysql)Create(prestring string, parm ...interface{}) (int64, error) {
 //打开数据库连接 open a connecttion
 //username:password@protocol(address)/dbname?param=value
 func (db *Mysql)Open(){
+	if db.Client!=nil{
+		return
+	}
 	dbs, err := sql.Open("mysql", db.Config.Username + ":" + db.Config.Password + "@tcp(" + db.Config.Ip + ":" + db.Config.Port + ")/" + db.Config.Dbname + "?charset=utf8")
 	dbs.SetMaxIdleConns(1000)
 	dbs.SetMaxOpenConns(2000)
@@ -80,6 +83,7 @@ func (db *Mysql)Open(){
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
 	db.Client = dbs
 }
 
