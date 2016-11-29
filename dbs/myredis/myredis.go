@@ -28,6 +28,7 @@ func NewRedis(config RedisConfig) (MyRedis, error) {
 		DB:         config.DB,       // use default DB
 		MaxRetries: 2,               // fail command retry 2
 		PoolSize:   20,              // redis pool size
+		DialTimeout:util.Second(10),
 		// another options is default
 	})
 
