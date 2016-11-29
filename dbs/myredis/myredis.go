@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gopkg.in/redis.v4"
 	"time"
+	"github.com/hunterhug/go_tool/util"
 )
 
 // redis tool
