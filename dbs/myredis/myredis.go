@@ -27,9 +27,9 @@ func NewRedis(config RedisConfig) (MyRedis, error) {
 		Addr:       config.Host,
 		Password:   config.Password, // no password set
 		DB:         config.DB,       // use default DB
-		MaxRetries: 2,               // fail command retry 2
-		PoolSize:   20,              // redis pool size
-		DialTimeout:util.Second(10),
+		MaxRetries: 5,               // fail command retry 2
+		PoolSize:   40,              // redis pool size
+		DialTimeout:util.Second(20),
 		// another options is default
 	})
 
