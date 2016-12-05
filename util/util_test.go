@@ -90,4 +90,7 @@ func TestUtil(t *testing.T) {
 	}else {
 		t.Log(finfo.Name())
 	}
+
+
+	t.Log(Substr("123456",0,15))
 }
