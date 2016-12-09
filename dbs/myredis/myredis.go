@@ -2,9 +2,9 @@ package myredis
 
 import (
 	"errors"
+	"github.com/hunterhug/go_tool/util"
 	"gopkg.in/redis.v4"
 	"time"
-	"github.com/hunterhug/go_tool/util"
 )
 
 // redis tool
@@ -24,12 +24,31 @@ type MyRedis struct {
 func NewRedis(config RedisConfig) (MyRedis, error) {
 	myredis := MyRedis{Config: config}
 	client := redis.NewClient(&redis.Options{
-		Addr:       config.Host,
-		Password:   config.Password, // no password set
-		DB:         config.DB,       // use default DB
-		MaxRetries: 5,               // fail command retry 2
-		PoolSize:   40,              // redis pool size
-		DialTimeout:util.Second(20),
+		Addr:        config.Host,
+		Password:    config.Password, // no password set
+		DB:          config.DB,       // use default DB
+		MaxRetries:  5,               // fail command retry 2
+		PoolSize:    40,              // redis pool size
+		DialTimeout: util.Second(20),
+		// another options is default
+	})
+
+	pong, err := client.Ping().Result()
+	if err == nil && pong == "PONG" {
+		myredis.Client = client
+	}
+	return myredis, err
+}
+
+func NewRedisPool(config RedisConfig, size int) (MyRedis, error) {
+	myredis := MyRedis{Config: config}
+	client := redis.NewClient(&redis.Options{
+		Addr:        config.Host,
+		Password:    config.Password, // no password set
+		DB:          config.DB,       // use default DB
+		MaxRetries:  5,               // fail command retry 2
+		PoolSize:    size,            // redis pool size
+		DialTimeout: util.Second(20),
 		// another options is default
 	})
 
@@ -122,19 +141,19 @@ func (db *MyRedis) Rpoplpush(source, destination string) (string, error) {
 	return db.Client.RPopLPush(source, destination).Result()
 }
 
-func(db *MyRedis) Hexists(key, field string)(bool,error){
-	return db.Client.HExists(key,field).Result()
+func (db *MyRedis) Hexists(key, field string) (bool, error) {
+	return db.Client.HExists(key, field).Result()
 }
 
-func(db *MyRedis) Hget(key, field string)(string,error){
-	return db.Client.HGet(key,field).Result()
+func (db *MyRedis) Hget(key, field string) (string, error) {
+	return db.Client.HGet(key, field).Result()
 }
 
-func(db *MyRedis) Hset(key, field, value string)(bool,error){
-	return db.Client.HSet(key,field,value).Result()
+func (db *MyRedis) Hset(key, field, value string) (bool, error) {
+	return db.Client.HSet(key, field, value).Result()
 }
 
 // return item rem number if count==0 all rem if count>0 from the list head to rem
-func(db *MyRedis) Lrem(key string, count int64, value interface{})(int64,error){
-	return db.Client.LRem(key,count,value).Result()
+func (db *MyRedis) Lrem(key string, count int64, value interface{}) (int64, error) {
+	return db.Client.LRem(key, count, value).Result()
 }
