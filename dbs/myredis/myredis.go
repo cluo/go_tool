@@ -112,6 +112,10 @@ func (db *MyRedis) Llen(key string) (int64, error) {
 	return db.Client.LLen(key).Result()
 }
 
+func (db *MyRedis) Hlen(key string) (int64, error) {
+	return db.Client.HLen(key).Result()
+}
+
 func (db *MyRedis) Rpop(key string) (string, error) {
 	return db.Client.RPop(key).Result()
 }
