@@ -68,13 +68,12 @@ func (db *Mysql) Create(prestring string, parm ...interface{}) (int64, error) {
 }
 
 // create database
-func (dbconfig *MysqlConfig) CreateDb() (int64, error) {
+func (dbconfig MysqlConfig) CreateDb() (int64, error) {
 	dbname := dbconfig.Dbname
 	sql := fmt.Sprintf("CREATE DATABASE `%s`;", dbname)
 	dbconfig.Dbname = ""
 	db := New(dbconfig)
 	num, err := db.Create(sql)
-	dbconfig.Dbname = dbname
 	return num, err
 
 }
