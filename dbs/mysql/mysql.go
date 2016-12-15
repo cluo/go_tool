@@ -10,6 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	//"fmt"
+	"fmt"
 )
 
 // Mysql config
@@ -28,12 +29,12 @@ type Mysql struct {
 }
 
 func New(config MysqlConfig) Mysql {
-	return Mysql{Config:config}
+	return Mysql{Config: config}
 }
 
 //插入数据
 //Insert Data
-func (db *Mysql)Insert(prestring string, parm ...interface{}) (int64, error) {
+func (db *Mysql) Insert(prestring string, parm ...interface{}) (int64, error) {
 	stmt, err := db.Client.Prepare(prestring)
 	if err != nil {
 		//log.Println(err)
@@ -50,7 +51,7 @@ func (db *Mysql)Insert(prestring string, parm ...interface{}) (int64, error) {
 }
 
 // Create table
-func (db *Mysql)Create(prestring string, parm ...interface{}) (int64, error) {
+func (db *Mysql) Create(prestring string, parm ...interface{}) (int64, error) {
 	stmt, err := db.Client.Prepare(prestring)
 	if err != nil {
 		//log.Println(err)
@@ -66,13 +67,25 @@ func (db *Mysql)Create(prestring string, parm ...interface{}) (int64, error) {
 
 }
 
+// create database
+func (dbconfig *MysqlConfig) CreateDb() (int64, error) {
+	dbname := dbconfig.Dbname
+	sql := fmt.Sprintf("CREATE DATABASE `%s`;", dbname)
+	dbconfig.Dbname = ""
+	db := New(dbconfig)
+	num, err := db.Create(sql)
+	dbconfig.Dbname = dbname
+	return num, err
+
+}
+
 //打开数据库连接 open a connecttion
 //username:password@protocol(address)/dbname?param=value
-func (db *Mysql)Open(){
-	if db.Client!=nil{
+func (db *Mysql) Open() {
+	if db.Client != nil {
 		return
 	}
-	dbs, err := sql.Open("mysql", db.Config.Username + ":" + db.Config.Password + "@tcp(" + db.Config.Ip + ":" + db.Config.Port + ")/" + db.Config.Dbname + "?charset=utf8")
+	dbs, err := sql.Open("mysql", db.Config.Username+":"+db.Config.Password+"@tcp("+db.Config.Ip+":"+db.Config.Port+")/"+db.Config.Dbname+"?charset=utf8")
 	dbs.SetMaxIdleConns(1000)
 	dbs.SetMaxOpenConns(2000)
 	if err != nil {
@@ -88,7 +101,7 @@ func (db *Mysql)Open(){
 }
 
 //查询数据库 Query
-func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[string]interface{}, err error) {
+func (db *Mysql) Select(prestring string, parm ...interface{}) (returnrows []map[string]interface{}, err error) {
 	returnrows = []map[string]interface{}{}
 	rows, err := db.Client.Query(prestring, parm...)
 	if err != nil {
@@ -100,7 +113,7 @@ func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[
 	columns, err := rows.Columns()
 
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 
 	// Make a slice for the values
@@ -120,7 +133,7 @@ func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[
 		// get RawBytes from data
 		err = rows.Scan(scanArgs...)
 		if err != nil {
-			return nil,err
+			return nil, err
 		}
 
 		// Now do something with the data.
@@ -141,7 +154,7 @@ func (db *Mysql)Select(prestring string, parm ...interface{}) (returnrows []map[
 		//log.Println("-----------------------------------")
 	}
 	if err = rows.Err(); err != nil {
-		return nil,err
+		return nil, err
 	}
 	return
 }
