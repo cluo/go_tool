@@ -74,6 +74,7 @@ func (dbconfig MysqlConfig) CreateDb() (int64, error) {
 	dbconfig.Dbname = ""
 	db := New(dbconfig)
 	num, err := db.Create(sql)
+	dbconfig.Dbname = dbname
 	return num, err
 
 }
