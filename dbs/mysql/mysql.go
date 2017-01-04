@@ -87,8 +87,8 @@ func (db *Mysql) Open() {
 		return
 	}
 	dbs, err := sql.Open("mysql", db.Config.Username+":"+db.Config.Password+"@tcp("+db.Config.Ip+":"+db.Config.Port+")/"+db.Config.Dbname+"?charset=utf8")
-	dbs.SetMaxIdleConns(1000)
-	dbs.SetMaxOpenConns(2000)
+	dbs.SetMaxIdleConns(-1)
+	dbs.SetMaxOpenConns(-1)
 	if err != nil {
 		log.Fatalf("Open database error: %s\n", err)
 	}
