@@ -70,7 +70,7 @@ func (db *Mysql) Create(prestring string, parm ...interface{}) (int64, error) {
 // create database
 func (dbconfig MysqlConfig) CreateDb() (int64, error) {
 	dbname := dbconfig.Dbname
-	sql := fmt.Sprintf("CREATE DATABASE `%s`;", dbname)
+	sql := fmt.Sprintf("CREATE DATABASE `%s` DEFAULT CHARSET utf8 COLLATE utf8_general_ci;", dbname)
 	dbconfig.Dbname = ""
 	db := New(dbconfig)
 	db.Open()
