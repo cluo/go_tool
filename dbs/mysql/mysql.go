@@ -96,7 +96,8 @@ func (db *Mysql) Open(maxopen int,maxidle int) {
 
 	err = dbs.Ping()
 	if err != nil {
-		log.Fatal(err.Error())
+		//log.Fatal(err.Error())
+		log.Println("Ping err:"+err.Error())
 	}
 
 	db.Client = dbs
