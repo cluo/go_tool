@@ -149,7 +149,7 @@ func TestMysql(t *testing.T) {
 	db := New(config)
 
 	// open connection
-	db.Open()
+	db.Open(2000,1000)
 
 	// create sql
 	sql := `

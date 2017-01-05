@@ -73,7 +73,7 @@ func (dbconfig MysqlConfig) CreateDb() (int64, error) {
 	sql := fmt.Sprintf("CREATE DATABASE `%s` DEFAULT CHARSET utf8 COLLATE utf8_general_ci;", dbname)
 	dbconfig.Dbname = ""
 	db := New(dbconfig)
-	db.Open()
+	db.Open(2000,1000)
 	num, err := db.Create(sql)
 	dbconfig.Dbname = dbname
 	return num, err
