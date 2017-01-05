@@ -82,16 +82,17 @@ func (dbconfig MysqlConfig) CreateDb() (int64, error) {
 
 //打开数据库连接 open a connecttion
 //username:password@protocol(address)/dbname?param=value
-func (db *Mysql) Open() {
+func (db *Mysql) Open(maxopen int,maxidle int) {
 	if db.Client != nil {
 		return
 	}
 	dbs, err := sql.Open("mysql", db.Config.Username+":"+db.Config.Password+"@tcp("+db.Config.Ip+":"+db.Config.Port+")/"+db.Config.Dbname+"?charset=utf8")
-	dbs.SetMaxIdleConns(-1)
-	dbs.SetMaxOpenConns(-1)
 	if err != nil {
 		log.Fatalf("Open database error: %s\n", err)
 	}
+	defer dbs.Close()
+	dbs.SetMaxIdleConns(maxidle)
+	dbs.SetMaxOpenConns(maxopen)
 
 	err = dbs.Ping()
 	if err != nil {
