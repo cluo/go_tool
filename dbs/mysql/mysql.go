@@ -90,7 +90,7 @@ func (db *Mysql) Open(maxopen int,maxidle int) {
 	if err != nil {
 		log.Fatalf("Open database error: %s\n", err)
 	}
-	defer dbs.Close()
+	//defer dbs.Close()
 	dbs.SetMaxIdleConns(maxidle)
 	dbs.SetMaxOpenConns(maxopen)
 
