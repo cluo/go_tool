@@ -12,8 +12,6 @@ go get -v github.com/hunterhug/go-hbase
 go get -v gopkg.in/redis.v4
 go get -v github.com/gocql/gocql
 go get -v golang.org/x/net/context
-
-中国防火某些库无法下载！！！
 ```
 
 # 三.Include
@@ -484,30 +482,8 @@ func TestHbase(t1 *testing.T) {
 }
 ```
 
-## 4.Log 日志库　**(log library)**
 
-```
-package mylog
-
-import (
-	"testing"
-)
-
-func TestLog(t *testing.T) {
-	// log filename
-	logger:=NewLog("test.log")
-
-	// log level
-	logger.SetLevel("error")
-
-	logger.Println("1.println","11.println")
-	logger.Error("error")
-	logger.Debugf("%v","debug")
-}
-
-```
-
-## 5.Util 文件/时间等杂项库 **(some small library such as times and file)**
+## 4.Util 文件/时间等杂项库 **(some small library such as times and file)**
 
 ```
 package util
@@ -604,7 +580,7 @@ func TestUtil(t *testing.T) {
 can also install The Go plugin.
 
 # 五.Author
->一只尼玛
+>太阳萌飞了
 
 My website:[http://www.lenggirl.com](http://www.lenggirl.com)
 
